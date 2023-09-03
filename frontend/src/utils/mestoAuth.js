@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3000'
+const baseUrl = 'https://api.domainname.liubovm.nomoredomainsicu.ru'
 
 function getResponse(res) {
   if (!res.ok) {
