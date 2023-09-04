@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 84.201.131.15
+IP 84.201.131.15
 
 Frontend https://domainname.liubovm.nomoredomainsicu.ru
 
