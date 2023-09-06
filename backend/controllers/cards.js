@@ -16,7 +16,7 @@ module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => res.send(cards))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError(err.message));
       } else {
         next(err);
@@ -36,8 +36,6 @@ module.exports.deleteCard = (req, res, next) => {
         .catch((err) => {
           if (err instanceof mongoose.Error.DocumentNotFoundError) {
             next(new NotFoundError('Карточка с указанным id не найдена'));
-          } else if (err instanceof mongoose.Error.CastError) {
-            next(new BadRequestError('Указан некорректный id карточки'));
           } else {
             next(err);
           }
@@ -46,6 +44,8 @@ module.exports.deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.DocumentNotFoundError) {
         next(new NotFoundError('Карточка с указанным id не найдена'));
+      } else if (err instanceof mongoose.Error.CastError) {
+        next(new BadRequestError('Указан некорректный id карточки'));
       } else {
         next(err);
       }
@@ -56,7 +56,7 @@ module.exports.likeCard = (req, res, next) => {
     .orFail(() => new NotFoundError('Карточка с указанным id не найдена'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof mongoose.Error.CastError) {
         next(new BadRequestError('Переданы некорректные данные для постановки лайка'));
       } else {
         next(err);
@@ -68,7 +68,7 @@ module.exports.dislikeCard = (req, res, next) => {
     .orFail(() => new NotFoundError('Карточка с указанным id не найдена'))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof mongoose.Error.CastError) {
         next(new BadRequestError('Переданы некорректные данные для снятии лайка'));
       } else {
         next(err);
